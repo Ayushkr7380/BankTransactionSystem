@@ -11,7 +11,7 @@ const tokenBlackListModel = require("../models/blackList.model");
 const cookieOption = {
     httpOnly: true, 
     secure: true, 
-    sameSite: "lax",
+    sameSite: "none",
     maxAge: 2 * 24 * 60 * 60 * 1000 
 }
 
