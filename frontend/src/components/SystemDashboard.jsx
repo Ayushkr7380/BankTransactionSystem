@@ -10,7 +10,9 @@ function SystemDashboard() {
     const { data, isLoading } = useQuery({
         queryKey: ['pending-requests'],
         queryFn: () => API.get('/notifications/pending'),
-        select: (res) => res.data.notifications
+        select: (res) => res.data.notifications,
+        staleTime: 30 * 1000,
+        refetchInterval: 30 * 1000
     })
 
     const { mutate: approve, isPending: approving } = useMutation({

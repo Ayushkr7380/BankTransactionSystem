@@ -7,28 +7,27 @@ export const useDashboard = () => {
 
     const { data: userData } = useQuery({
         queryKey: ['me'],
-        queryFn: getMeApi
+        queryFn: getMeApi,
+        staleTime: 5 * 60 * 1000 
     })
-
-    console.log(userData);
 
     const { data: accountsData, isLoading: accountsLoading } = useQuery({
         queryKey: ['accounts'],
-        queryFn: getMyAccountsApi
+        queryFn: getMyAccountsApi,
+        staleTime: 60 * 1000
     })
-    console.log(accountsData);
+    
 
     const { data: txnData, isLoading: txnLoading } = useQuery({
         queryKey: ['transactions'],
-        queryFn: getMyTransactionsApi
+        queryFn: getMyTransactionsApi,
+        staleTime: 30 * 1000
     })
 
-    console.log(txnData);
     
 
     const accounts = accountsData?.data?.accounts ?? []
     const transactions = txnData?.data?.transactions ?? []
-    // console.log("ds",transactions);
     
     const myAccountIds = txnData?.data?.myAccountIds ?? []
     const user = userData?.data?.user
