@@ -131,7 +131,7 @@ const userLoginController = async(req,res)=>{
     }
 
 
-    const user = await userModel.findOne({email}).select("+password");
+    const user = await userModel.findOne({email}).select("+password +systemUser");
 
     if(!user){
         return res.status(401).json({
@@ -161,7 +161,8 @@ const userLoginController = async(req,res)=>{
         user: {
             _id: user._id,
             email: user.email,
-            name: user.name
+            name: user.name,
+            isSystemUser: user.systemUser
         },
     })
 

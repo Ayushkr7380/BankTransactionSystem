@@ -7,6 +7,7 @@ import TransferPage from "../components/TransferPage"
 import ProfilePage from '../components/ProfilePage'
 import AccountDetailPage from '../components/AccountDetailPage'
 import ProtectedRoute from "../components/ProtectedRoute"
+import SystemDashboard from "../components/SystemDashboard"
 
 function CustomRoutes() {
     return (
@@ -39,6 +40,12 @@ function CustomRoutes() {
             <Route path="/account/:accountId" element={
                 <ProtectedRoute>
                     <AccountDetailPage />
+                </ProtectedRoute>
+            } />
+
+            <Route path="/system/dashboard" element={
+                <ProtectedRoute>
+                    <SystemDashboard />
                 </ProtectedRoute>
             } />
 

@@ -285,7 +285,6 @@ async function createInitialFundsTransaction(req, res) {
         transaction: transaction
     })
 
-
 }
 
 async function getMyTransactions(req, res) {

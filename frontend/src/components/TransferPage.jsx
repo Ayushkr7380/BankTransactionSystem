@@ -105,7 +105,7 @@ function TransferPage() {
                             
                             // UserId for navigation
                             const chatUserId = isSent
-                                ? txn.toAccount?.user    // ← Populate hona chahiye
+                                ? txn.toAccount?.user   
                                 : txn.fromAccount?.user
 
                             return (

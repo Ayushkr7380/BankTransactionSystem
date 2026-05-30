@@ -64,9 +64,49 @@ async function sendTransactionFailureEmail(userEmail, name, amount, toAccount) {
     await sendEmail(userEmail, subject, text, html);
 }
 
+async function sendDepositRequestEmail(systemEmail, userName, amount, notificationId) {
+    await transporter.sendMail({
+        to: systemEmail,
+        subject: "New Deposit Request",
+        html: `
+            <h2>New Deposit Request</h2>
+            <p><b>${userName}</b> has requested a deposit of <b>₹${amount}</b></p>
+            <p>Login to approve or reject this request.</p>
+        `
+    })
+}
+
+async function sendDepositSuccessEmail(userEmail, userName, amount) {
+    await transporter.sendMail({
+        to: userEmail,
+        subject: "Deposit Approved ✓",
+        html: `
+            <h2>Amount Credited!</h2>
+            <p>Hi ${userName},</p>
+            <p>₹${amount} has been successfully credited to your account.</p>
+        `
+    })
+}
+
+async function sendDepositRejectedEmail(userEmail, userName, amount) {
+    await transporter.sendMail({
+        to: userEmail,
+        subject: "Deposit Request Rejected",
+        html: `
+            <h2>Request Rejected</h2>
+            <p>Hi ${userName},</p>
+            <p>Your deposit request of ₹${amount} has been rejected.</p>
+            <p>Please contact support for more information.</p>
+        `
+    })
+}
+
 module.exports = {
     sendRegistrationEmail,
     sendTransactionEmail,
-    sendTransactionFailureEmail
+    sendTransactionFailureEmail,
+    sendDepositRequestEmail,
+    sendDepositSuccessEmail,
+    sendDepositRejectedEmail
     
 };

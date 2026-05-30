@@ -1,5 +1,5 @@
 const {Router } = require("express");
-const { authMiddleware ,authSystemUserMiddleware} = require("../middleware/auth.middleware");
+const { authMiddleware } = require("../middleware/auth.middleware");
 const transactionController = require("../controllers/transaction.controller");
 
 
@@ -22,11 +22,11 @@ transactionRoutes.post("/create",authMiddleware,transactionController.createTran
 transactionRoutes.get("/my",authMiddleware,transactionController.getMyTransactions);
 
 
-/**
- * - POST /api/transactions/system/initial-funds
- * - Create initial funds transaction from system user
- */
-transactionRoutes.post("/system/initial-funds", authSystemUserMiddleware, transactionController.createInitialFundsTransaction);
+// /**
+//  * - POST /api/transactions/system/initial-funds
+//  * - Create initial funds transaction from system user
+//  */
+// transactionRoutes.post("/system/initial-funds", authSystemUserMiddleware, transactionController.createInitialFundsTransaction);
 
 
 transactionRoutes.get('/chat/:userId', authMiddleware, transactionController.getChatTransactions)

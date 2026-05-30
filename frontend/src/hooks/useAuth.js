@@ -32,8 +32,15 @@ export const useLogin = () => {
     return useMutation({
         mutationFn: loginAPI,
 
-        onSuccess: () => {
-            navigate('/auth/Me')
+        onSuccess: (data) => {
+            const user = data.data.user
+
+            
+            if (user.isSystemUser) {
+                navigate('/system/dashboard')
+            } else {
+                navigate('/auth/Me')
+            }
         },
 
         onError: (error) => {
