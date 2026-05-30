@@ -1,4 +1,5 @@
 const accountModel = require("../models/account.model")
+const ledgerModel = require("../models/ledger.model")
 
 async function createAccountController(req,res){
     try {
@@ -191,11 +192,101 @@ async function setPrimaryAccount(req, res) {
     }
 }
 
-module.exports = {
+async function getAccountDetail(req, res) {
+    try {
+        const { accountId } = req.params
 
+        const account = await accountModel.findOne({
+            _id: accountId,
+            user: req.user._id
+        })
+
+        if (!account) {
+            return res.status(404).json({
+                success: false,
+                message: "Account not found"
+            })
+        }
+
+        const balance = await account.getBalance()
+
+        const transactions = await ledgerModel
+            .find({ account: accountId })
+            .populate('transaction')
+            .sort({ createdAt: -1 })
+            .limit(20)
+
+        return res.status(200).json({
+            success: true,
+            account: {
+                _id: account._id,
+                nickname: account.nickname,
+                upiId: account.upiId,
+                accountNumber: account.accountNumber,
+                status: account.status,
+                currency: account.currency,
+                isPrimary: account.isPrimary ?? false,
+                createdAt: account.createdAt,
+                balance
+            },
+            transactions
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+async function updateNickname(req, res) {
+    try {
+        const { accountId } = req.params
+        const { nickname } = req.body
+
+        if (!nickname) {
+            return res.status(400).json({
+                success: false,
+                message: "Nickname is required"
+            })
+        }
+
+        const account = await accountModel.findOne({
+            _id: accountId,
+            user: req.user._id
+        })
+
+        if (!account) {
+            return res.status(404).json({
+                success: false,
+                message: "Account not found"
+            })
+        }
+
+        account.nickname = nickname
+        await account.save()
+
+        return res.status(200).json({
+            success: true,
+            message: "Nickname updated successfully",
+            account
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+module.exports = {
     createAccountController,
     getUserAccountsController,
     getAccountBalanceController,
     searchAccountByUpiController,
-    setPrimaryAccount
+    setPrimaryAccount,
+    getAccountDetail,
+    updateNickname,
 }

@@ -15,15 +15,28 @@ router.post("/",authMiddleware.authMiddleware,accountController.createAccountCon
 
 router.get("/my", authMiddleware.authMiddleware, accountController.getUserAccountsController)
 
-router.get("/balance/:accountId", authMiddleware.authMiddleware, accountController.getAccountBalanceController);
-
-router.patch('/primary/:accountId', authMiddleware.authMiddleware, accountController.setPrimaryAccount)
-
-
 router.get(
    "/search",
    authMiddleware.authMiddleware,
    accountController.searchAccountByUpiController
 );
+
+router.patch('/primary/:accountId', authMiddleware.authMiddleware, accountController.setPrimaryAccount)
+
+
+router.patch('/nickname/:accountId', authMiddleware.authMiddleware, accountController.updateNickname)
+
+
+router.get('/:accountId', authMiddleware.authMiddleware, accountController.getAccountDetail)
+
+
+router.get("/balance/:accountId", authMiddleware.authMiddleware, accountController.getAccountBalanceController);
+
+
+
+
+
+
+
 
 module.exports = router;
