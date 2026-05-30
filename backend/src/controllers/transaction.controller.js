@@ -43,7 +43,7 @@ async function createTransaction(req,res){
 
     const toUserAccount = await accountModel.findOne({
         _id:toAccount,
-    })
+    }).populate('user', 'systemUser')
 
     if(!fromUserAccount || !toUserAccount){
         return res.status(400).json({
@@ -51,6 +51,11 @@ async function createTransaction(req,res){
         })
     }
     
+    if (toUserAccount.user.systemUser) {
+    return res.status(400).json({
+             message: "Cannot transfer to system account"
+        })
+    }
     
     /**
      * 2. Validate idempotency Key

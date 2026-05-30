@@ -130,6 +130,12 @@ async function searchAccountByUpiController(req, res) {
                 })
             }
 
+            if (account.user.systemUser) {
+                return res.status(400).json({
+                    message: "Cannot transfer to system account"
+                })
+            }
+
             return res.status(200).json({
                 account: {
                     _id: account._id,
