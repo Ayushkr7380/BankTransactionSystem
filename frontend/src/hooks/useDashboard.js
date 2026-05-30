@@ -1,4 +1,3 @@
-// hooks/useDashboard.js
 import { useQuery } from '@tanstack/react-query'
 import { getMyAccountsApi } from '../api/account.api'
 import { getMyTransactionsApi } from '../api/transaction.api'

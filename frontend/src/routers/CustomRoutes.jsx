@@ -4,6 +4,8 @@ import Registration from "../components/authComponents/Registration"
 import Home from "../components/Home"
 import ChatPage from "../components/ChatPage"
 import TransferPage from "../components/TransferPage"
+import ProfilePage from '../components/ProfilePage'
+import AccountDetailPage from '../components/AccountDetailPage'
 import ProtectedRoute from "../components/ProtectedRoute"
 
 function CustomRoutes() {
@@ -27,6 +29,16 @@ function CustomRoutes() {
             <Route path="/chat/:userId" element={
                 <ProtectedRoute>
                     <ChatPage />
+                </ProtectedRoute>
+            } />
+            <Route path="/profile" element={
+                <ProtectedRoute>
+                    <ProfilePage />
+                </ProtectedRoute>
+            } />
+            <Route path="/account/:accountId" element={
+                <ProtectedRoute>
+                    <AccountDetailPage />
                 </ProtectedRoute>
             } />
 

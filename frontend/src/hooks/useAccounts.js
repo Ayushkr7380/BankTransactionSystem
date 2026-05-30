@@ -1,5 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { createAccountApi, getMyAccountsApi, searchByUpiApi, setPrimaryAccountApi } from '../api/account.api'
+import { 
+    getMyAccountsApi, 
+    createAccountApi, 
+    setPrimaryAccountApi, 
+    searchByUpiApi,
+    getAccountDetailApi,
+    updateNicknameApi
+} from '../api/account.api'
+
 
 export const useGetMyAccounts = () => {
     return useQuery({
@@ -50,5 +58,27 @@ export const useSearchUpi = (upiId) => {
         queryFn: () => searchByUpiApi(upiId),
         select: (data) => data.data,
         enabled: upiId?.length > 3  
+    })
+}
+
+export const useAccountDetail = (accountId) => {
+    return useQuery({
+        queryKey: ['account', accountId],
+        queryFn: () => getAccountDetailApi(accountId),
+        select: (data) => data.data,
+        enabled: !!accountId
+    })
+}
+
+export const useUpdateNickname = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: ({ accountId, nickname }) => updateNicknameApi(accountId, nickname),
+
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries(['account', variables.accountId])
+            queryClient.invalidateQueries(['accounts'])
+        }
     })
 }

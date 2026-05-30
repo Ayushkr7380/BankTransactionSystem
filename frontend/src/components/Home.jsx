@@ -1,6 +1,6 @@
 import { useDashboard } from '../hooks/useDashboard'
-import { useLogout } from '../hooks/useAuth'
-import { Link } from 'react-router-dom'
+// import { useLogout } from '../hooks/useAuth'
+import { Link , useNavigate} from 'react-router-dom'
 import CreateAccountModal from './CreateAccountModal'
 import { useState } from 'react'
 import { useSetPrimary } from '../hooks/useAccounts'
@@ -10,6 +10,8 @@ function DashboardPage() {
 
     const [showModal, setShowModal] = useState(false) 
 
+    const navigate = useNavigate();
+
     const {
         user, accounts, transactions,
         myAccountIds, totalBalance,
@@ -17,7 +19,7 @@ function DashboardPage() {
         isLoading
     } = useDashboard()
 
-    const { mutate: logout } = useLogout()
+    // const { mutate: logout } = useLogout()
    const { mutate: setPrimary, isPending } = useSetPrimary()
 
 
@@ -30,7 +32,6 @@ function DashboardPage() {
     return (
         <div className="min-h-screen bg-gray-50">
 
-            {/* Navbar */}
             <nav className="bg-white border-b border-gray-100 px-6 h-14 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <div className="w-7 h-7 bg-blue-50 rounded-lg flex items-center justify-center">
@@ -40,17 +41,16 @@ function DashboardPage() {
                     </div>
                     <span className="text-sm font-medium">LedgerPay</span>
                 </div>
-                <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-green-50 border border-gray-100 flex items-center justify-center text-xs font-medium text-green-700">
-                        {user?.name?.slice(0, 2).toUpperCase()}
-                    </div>
-                    <button
-                        onClick={() => logout()}
-                        className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-1.5"
-                    >
-                        Logout
-                    </button>
-                </div>
+
+                
+                <button
+                    onClick={() => navigate('/profile')}
+                    className="w-8 h-8 rounded-full bg-green-50 border border-gray-100 flex items-center justify-center text-xs font-medium text-green-700"
+                >
+                    {user?.name?.slice(0, 2).toUpperCase()}
+                </button>
+
+                
             </nav>
 
             <div className="p-6 flex flex-col gap-5 max-w-lg mx-auto">
