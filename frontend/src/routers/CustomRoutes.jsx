@@ -7,7 +7,12 @@ import TransferPage from "../components/TransferPage"
 import ProfilePage from '../components/ProfilePage'
 import AccountDetailPage from '../components/AccountDetailPage'
 import ProtectedRoute from "../components/ProtectedRoute"
-import SystemDashboard from "../components/SystemDashboard"
+import SystemDashboard from "../components/system/SystemDashboard"
+import SystemUsers from "../components/system/SystemUsers"
+import SystemUserDetail from "../components/system/SystemUserDetail"
+import SystemAccounts from "../components/system/SystemAccounts"
+import SystemAccountDetail from "../components/system/SystemAccountDetail"
+import SystemTransactions from "../components/system/SystemTransactions"
 
 function CustomRoutes() {
     return (
@@ -47,6 +52,26 @@ function CustomRoutes() {
                 <ProtectedRoute>
                     <SystemDashboard />
                 </ProtectedRoute>
+            } />
+
+            <Route path="/system/users" element={
+                <ProtectedRoute><SystemUsers /></ProtectedRoute>
+            } />
+
+            <Route path="/system/users/:userId" element={
+                <ProtectedRoute><SystemUserDetail /></ProtectedRoute>
+            } />
+
+            <Route path="/system/accounts" element={
+                <ProtectedRoute><SystemAccounts /></ProtectedRoute>
+            } />
+
+            <Route path="/system/accounts/:accountId" element={
+                <ProtectedRoute><SystemAccountDetail /></ProtectedRoute>
+            } />
+
+            <Route path="/system/transactions" element={
+                <ProtectedRoute><SystemTransactions /></ProtectedRoute>
             } />
 
             {/* Default redirect */}
