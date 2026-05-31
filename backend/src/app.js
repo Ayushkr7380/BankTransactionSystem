@@ -7,6 +7,7 @@ const authRouter = require("./routes/auth.routes")
 const accountRouter = require("./routes/account.routes")
 const transactionRoutes = require("./routes/transaction.routes")
 const notificationRoutes = require("./routes/notification.routes")
+const adminRoutes = require('./routes/admin.routes')
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use("/api/auth",authRouter);
 app.use("/api/account",accountRouter);
 app.use("/api/transactions", transactionRoutes)
 app.use("/api/notifications", notificationRoutes)
+app.use('/api/admin', adminRoutes)
 
 
 
