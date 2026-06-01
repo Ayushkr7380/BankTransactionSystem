@@ -58,18 +58,22 @@ async function createDepositRequest(req, res) {
             amount
         })
 
-        await emailService.sendDepositRequestEmail(
-            systemUser.email,
-            req.user.name,
-            amount,
-            notification._id
-        )
 
         return res.status(201).json({
             success: true,
             message: "Deposit request sent successfully",
             notification
         })
+
+
+        emailService.sendDepositRequestEmail(
+            systemUser.email,
+            req.user.name,
+            amount,
+            notification._id
+        ).catch(err => console.error('Email failed:', err))
+
+        
 
     } catch (error) {
         return res.status(500).json({
@@ -135,16 +139,18 @@ async function approveDepositRequest(req, res) {
 
         await notificationModel.findByIdAndDelete(notificationId)
 
-        await emailService.sendDepositSuccessEmail(
-            notification.fromUser.email,
-            notification.fromUser.name,
-            notification.amount
-        )
+        
 
         return res.status(200).json({
             success: true,
             message: "Deposit approved successfully"
         })
+
+        emailService.sendDepositSuccessEmail(
+            notification.fromUser.email,
+            notification.fromUser.name,
+            notification.amount
+        ).catch(err => console.error('Email failed:', err))
 
     } catch (error) {
         return res.status(500).json({
@@ -178,16 +184,18 @@ async function rejectDepositRequest(req, res) {
 
         await notificationModel.findByIdAndDelete(notificationId)
 
-        await emailService.sendDepositRejectedEmail(
-            notification.fromUser.email,
-            notification.fromUser.name,
-            notification.amount
-        )
+        
 
         return res.status(200).json({
             success: true,
             message: "Deposit request rejected"
         })
+
+        emailService.sendDepositRejectedEmail(
+            notification.fromUser.email,
+            notification.fromUser.name,
+            notification.amount
+        ).catch(err=>console.log("Email failed",err))
 
     } catch (error) {
         return res.status(500).json({
