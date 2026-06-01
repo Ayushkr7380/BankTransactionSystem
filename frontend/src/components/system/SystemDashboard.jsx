@@ -4,7 +4,7 @@ import {
     useAdminStats,
     useAdminPendingRequests,
     useApproveDeposit,
-    useRejectDeposit
+    useRejectDeposit,
 } from '../../hooks/useAdmin'
 import toast from 'react-hot-toast'
 

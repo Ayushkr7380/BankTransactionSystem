@@ -102,3 +102,31 @@ export const useRejectDeposit = () => {
         }
     })
 }
+
+export const useFreezeAccount = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: (accountId) =>
+            API.patch(`/admin/accounts/${accountId}/freeze`),
+
+        onSuccess: (_, accountId) => {
+            queryClient.invalidateQueries(['admin-account', accountId])
+            queryClient.invalidateQueries(['admin-accounts'])
+        }
+    })
+}
+
+export const useUnfreezeAccount = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: (accountId) =>
+            API.patch(`/admin/accounts/${accountId}/unfreeze`),
+
+        onSuccess: (_, accountId) => {
+            queryClient.invalidateQueries(['admin-account', accountId])
+            queryClient.invalidateQueries(['admin-accounts'])
+        }
+    })
+}

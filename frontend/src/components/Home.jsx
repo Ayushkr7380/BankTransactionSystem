@@ -109,47 +109,75 @@ function DashboardPage() {
                         <CreateAccountModal onClose={() => setShowModal(false)} />
                     )}
                     <div className="flex flex-col gap-2">
-                        {accounts.map(acc => (
-                            <div key={acc._id} className="bg-white border border-gray-100 rounded-xl px-4 py-3">
-                               
-                                <div className="flex justify-between items-start">
-                                    <div>
-                                        <p className="text-sm font-medium text-gray-900">
-                                            {acc.nickname}
-                                        </p>
-                                        <p className="text-xs text-gray-400 mt-0.5">
-                                            {acc.upiId}
-                                        </p>
-                                    </div>
-                                    <div className="flex flex-col items-end gap-1">
-                                        <p className="text-sm font-medium text-gray-900">
-                                            ₹{acc.balance.toLocaleString('en-IN')}
-                                            
-                                        </p>
+                        {accounts.map(acc => {
+                            const isFrozen = acc.status === 'FROZEN'
+                            return (
+                                <div
+                                    key={acc._id}
+                                    className={`border rounded-xl px-4 py-3 ${
+                                        isFrozen
+                                            ? 'bg-gray-50 border-gray-200 opacity-75'
+                                            : 'bg-white border-gray-100'
+                                    }`}
+                                >
+                                    <div className="flex justify-between items-start">
+                                        <div className="flex items-center gap-2">
+                                            {/* 🔒 Frozen icon */}
+                                            {isFrozen && (
+                                                <svg className="w-3.5 h-3.5 text-red-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                                </svg>
+                                            )}
+                                            <div>
+                                                <p className={`text-sm font-medium ${isFrozen ? 'text-gray-400' : 'text-gray-900'}`}>
+                                                    {acc.nickname}
+                                                </p>
+                                                <p className="text-xs text-gray-400 mt-0.5">
+                                                    {acc.upiId}
+                                                </p>
+                                            </div>
+                                        </div>
 
-                                        {acc.isPrimary === true? (
-                                            
-                                            <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">
-                                                Primary Account
-                                            </span>
-                                        ) : (
-                                            <button
-                                                onClick={() => setPrimary(acc._id, {
-                                                    onSuccess: () => toast.success('Primary account updated!'),
-                                                    onError: (error) => toast.error(
-                                                        error.response?.data?.message ?? 'Something went wrong'
-                                                    )
-                                                })}
-                                                disabled={isPending}
-                                                className="text-xs text-gray-400 hover:text-blue-600 transition disabled:opacity-50"
-                                            >
-                                                {isPending ? 'Saving...' : 'Set as primary'}
-                                            </button>
-                                        )}
+                                        <div className="flex flex-col items-end gap-1">
+                                            <p className={`text-sm font-medium ${isFrozen ? 'text-gray-400' : 'text-gray-900'}`}>
+                                                ₹{acc.balance.toLocaleString('en-IN')}
+                                            </p>
+
+                                            {/* Status badge / action */}
+                                            {isFrozen ? (
+                                                <span className="text-xs bg-red-50 text-red-400 px-2 py-0.5 rounded-full">
+                                                    Frozen
+                                                </span>
+                                            ) : acc.isPrimary ? (
+                                                <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">
+                                                    Primary
+                                                </span>
+                                            ) : (
+                                                <button
+                                                    onClick={() => setPrimary(acc._id, {
+                                                        onSuccess: () => toast.success('Primary account updated!'),
+                                                        onError: (error) => toast.error(
+                                                            error.response?.data?.message ?? 'Something went wrong'
+                                                        )
+                                                    })}
+                                                    disabled={isPending}
+                                                    className="text-xs text-gray-400 hover:text-blue-600 transition disabled:opacity-50"
+                                                >
+                                                    {isPending ? 'Saving...' : 'Set as primary'}
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
+
+                                    {/* Frozen notice strip */}
+                                    {isFrozen && (
+                                        <p className="text-xs text-red-400 mt-2 pt-2 border-t border-gray-100">
+                                            This account is frozen. Contact support to reactivate.
+                                        </p>
+                                    )}
                                 </div>
-                            </div>
-                        ))}
+                            )
+                        })}
                     </div>
                 </div>
 

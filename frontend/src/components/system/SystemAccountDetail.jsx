@@ -1,13 +1,16 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { useAdminAccountDetail } from '../../hooks/useAdmin'
+import { useAdminAccountDetail, useFreezeAccount, useUnfreezeAccount } from '../../hooks/useAdmin'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 
 function SystemAccountDetail() {
     const { accountId } = useParams()
     const navigate = useNavigate()
     const [filter, setFilter] = useState('ALL')
 
-    const { data, isLoading } = useAdminAccountDetail(accountId)        
+    const { data, isLoading } = useAdminAccountDetail(accountId)
+    const { mutate: freeze, isPending: freezing } = useFreezeAccount()
+    const { mutate: unfreeze, isPending: unfreezing } = useUnfreezeAccount()
 
     if (isLoading) return (
         <div className="min-h-screen flex items-center justify-center">
@@ -44,6 +47,8 @@ function SystemAccountDetail() {
                 <span className={`text-xs px-2 py-1 rounded-full ${
                     account?.status === 'ACTIVE'
                         ? 'bg-green-50 text-green-600'
+                        : account?.status === 'FROZEN'
+                        ? 'bg-blue-50 text-blue-600'
                         : 'bg-red-50 text-red-500'
                 }`}>
                     {account?.status}
@@ -62,6 +67,47 @@ function SystemAccountDetail() {
                         {account?.currency} · {account?.accountNumber}
                     </p>
                 </div>
+
+                {/* Freeze / Unfreeze Button */}
+                {account?.status === 'ACTIVE' ? (
+                    <button
+                        onClick={() => freeze(accountId, {
+                            onSuccess: () => toast.success('Account frozen!'),
+                            onError: (err) => toast.error(err.response?.data?.message ?? 'Failed')
+                        })}
+                        disabled={freezing}
+                        className="bg-white border border-red-100 rounded-xl px-4 py-3 flex items-center gap-3 text-left hover:bg-red-50 transition disabled:opacity-50"
+                    >
+                        <span className="text-xl">🔒</span>
+                        <div>
+                            <p className="text-sm font-medium text-red-600">
+                                Freeze Account
+                            </p>
+                            <p className="text-xs text-gray-400">
+                                Block all transactions
+                            </p>
+                        </div>
+                    </button>
+                ) : account?.status === 'FROZEN' ? (
+                    <button
+                        onClick={() => unfreeze(accountId, {
+                            onSuccess: () => toast.success('Account unfrozen!'),
+                            onError: (err) => toast.error(err.response?.data?.message ?? 'Failed')
+                        })}
+                        disabled={unfreezing}
+                        className="bg-white border border-green-100 rounded-xl px-4 py-3 flex items-center gap-3 text-left hover:bg-green-50 transition disabled:opacity-50"
+                    >
+                        <span className="text-xl">🔓</span>
+                        <div>
+                            <p className="text-sm font-medium text-green-600">
+                                Unfreeze Account
+                            </p>
+                            <p className="text-xs text-gray-400">
+                                Restore transactions
+                            </p>
+                        </div>
+                    </button>
+                ) : null}
 
                 {/* Account Info */}
                 <div className="bg-white border border-gray-100 rounded-xl p-4 flex flex-col gap-3">

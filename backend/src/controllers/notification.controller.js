@@ -34,6 +34,13 @@ async function createDepositRequest(req, res) {
             })
         }
 
+        if (userAccount.status !== "ACTIVE") {
+            return res.status(403).json({
+                success: false,
+                message: "Frozen account cannot request a deposit"
+            })
+        }
+
         const systemUser = await userModel.findOne({ systemUser: true }).select('+systemUser')
 
         if (!systemUser) {

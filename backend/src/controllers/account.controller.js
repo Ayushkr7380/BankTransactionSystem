@@ -56,7 +56,6 @@ async function getUserAccountsController(req,res){
     try {
         const accounts = await accountModel.find({
             user: req.user._id,
-            status: "ACTIVE"
         })
 
        
@@ -173,6 +172,13 @@ async function setPrimaryAccount(req, res) {
             })
         }
 
+        if (account.status !== "ACTIVE") {
+            return res.status(403).json({
+                success: false,
+                message: "Frozen account cannot be set as primary"
+            })
+        }
+
         if(account.isPrimary) {
             return res.status(400).json({
                 success: false,
@@ -267,6 +273,13 @@ async function updateNickname(req, res) {
             return res.status(404).json({
                 success: false,
                 message: "Account not found"
+            })
+        }
+
+        if (account.status !== "ACTIVE") {
+            return res.status(403).json({
+                success: false,
+                message: "Frozen account nickname cannot be updated"
             })
         }
 

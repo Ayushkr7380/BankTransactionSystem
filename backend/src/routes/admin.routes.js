@@ -5,7 +5,9 @@ const {
     getUserDetail,
     getAllAccounts,
     getAccountDetail,
-    getAllTransactions
+    getAllTransactions,
+    freezeAccount,
+    unfreezeAccount
 } = require('../controllers/admin.controller')
 const { authSystemUserMiddleware } = require("../middleware/auth.middleware")
 
@@ -15,5 +17,8 @@ router.get('/users/:userId', authSystemUserMiddleware, getUserDetail)
 router.get('/accounts', authSystemUserMiddleware, getAllAccounts)
 router.get('/accounts/:accountId', authSystemUserMiddleware, getAccountDetail)
 router.get('/transactions', authSystemUserMiddleware, getAllTransactions)
+
+router.patch('/accounts/:accountId/freeze', authSystemUserMiddleware, freezeAccount)
+router.patch('/accounts/:accountId/unfreeze', authSystemUserMiddleware, unfreezeAccount)
 
 module.exports = router
