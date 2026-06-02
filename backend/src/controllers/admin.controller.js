@@ -335,7 +335,7 @@ async function getAllDepositRequests(req, res) {
             .sort({ createdAt: -1 });
 
 
-        console.log(requests)
+        
         return res.status(200).json({
             success: true,
             requests

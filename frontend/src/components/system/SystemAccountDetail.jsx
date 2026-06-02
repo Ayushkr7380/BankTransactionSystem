@@ -74,6 +74,8 @@ function SystemAccountDetail() {
         return txn.type === filter
     })
 
+    
+
     return (
         <div className="min-h-screen bg-gray-50">
 

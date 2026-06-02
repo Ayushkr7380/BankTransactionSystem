@@ -78,6 +78,7 @@ function AccountDetailPage() {
         return txn.type === filter
     })
 
+
     const copyToClipboard = (text, label) => {
         navigator.clipboard.writeText(text)
         toast.success(`${label} copied!`)
@@ -259,8 +260,20 @@ function AccountDetailPage() {
                                         {txn.type === 'CREDIT' || txn.type === 'SYSTEM_CAPITAL' ? '↓' : '↑'}
                                     </div>
                                     <div>
+                                        {/* <p className="text-sm font-medium text-gray-900">
+                                            {txn.type === 'SYSTEM_CAPITAL'
+                                                ? 'Account Funding'
+                                                : txn.type === 'CREDIT'
+                                                ? 'Received'
+                                                : 'Sent'
+                                            }
+                                        </p> */}
+
                                         <p className="text-sm font-medium text-gray-900">
-                                            {txn.type === 'SYSTEM_CAPITAL' ? 'Initial Deposit' : txn.type}
+                                            {txn.type === 'CREDIT'
+                                                ? `From ${txn.transaction?.fromAccount?.upiId}`
+                                                : `To ${txn.transaction?.toAccount?.upiId}`
+                                            }
                                         </p>
                                         <p className="text-xs text-gray-400">
                                             {new Date(txn.createdAt).toLocaleDateString('en-IN')}

@@ -224,7 +224,20 @@ async function getAccountDetail(req, res) {
 
         const transactions = await ledgerModel
             .find({ account: accountId })
-            .populate('transaction')
+            .populate({
+                path: 'transaction',
+                select: '-idempotencyKey',
+                populate: [
+                    {
+                        path: 'fromAccount',
+                        select: 'upiId nickname'
+                    },
+                    {
+                        path: 'toAccount',
+                        select: 'upiId nickname'
+                    }
+                ]
+            })
             .sort({ createdAt: -1 })
             .limit(20)
 
