@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const { getAllDepositRequests } = require('../controllers/admin.controller')
 const {
     getStats,
     getAllUsers,
@@ -9,6 +10,7 @@ const {
     freezeAccount,
     unfreezeAccount
 } = require('../controllers/admin.controller')
+
 const { authSystemUserMiddleware } = require("../middleware/auth.middleware")
 
 router.get('/stats', authSystemUserMiddleware, getStats)
@@ -20,5 +22,8 @@ router.get('/transactions', authSystemUserMiddleware, getAllTransactions)
 
 router.patch('/accounts/:accountId/freeze', authSystemUserMiddleware, freezeAccount)
 router.patch('/accounts/:accountId/unfreeze', authSystemUserMiddleware, unfreezeAccount)
+
+router.get('/deposit-requests',authSystemUserMiddleware,getAllDepositRequests);
+
 
 module.exports = router

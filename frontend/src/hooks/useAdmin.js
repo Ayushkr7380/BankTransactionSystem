@@ -130,3 +130,12 @@ export const useUnfreezeAccount = () => {
         }
     })
 }
+
+export const useAdminDepositRequests = () => {
+    return useQuery({
+        queryKey: ['admin-deposit-requests'],
+        queryFn: () => API.get('/admin/deposit-requests'),
+        select: (res) => res.data.requests,
+        staleTime: 30 * 1000
+    })
+}

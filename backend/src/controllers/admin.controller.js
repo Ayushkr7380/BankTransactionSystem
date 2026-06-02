@@ -2,14 +2,16 @@ const userModel = require('../models/user.model')
 const accountModel = require('../models/account.model')
 const transactionModel = require('../models/transaction.model')
 const ledgerModel = require('../models/ledger.model')
+const depositRequestModel = require('../models/depositRequest.model')
 
 
 async function getStats(req, res) {
     try {
-        const [totalUsers, totalAccounts, totalTransactions] = await Promise.all([
+        const [totalUsers, totalAccounts, totalTransactions , totalDepositRequests] = await Promise.all([
             userModel.countDocuments({ systemUser: false }),
             accountModel.countDocuments({ user: { $ne: req.user._id } }),
-            transactionModel.countDocuments()
+            transactionModel.countDocuments(),
+            depositRequestModel.countDocuments()
         ])
 
         
@@ -27,7 +29,8 @@ async function getStats(req, res) {
                 totalUsers,
                 totalAccounts,
                 totalTransactions,
-                systemBalance
+                systemBalance,
+                totalDepositRequests
             }
         })
     } catch (error) {
@@ -321,6 +324,32 @@ async function unfreezeAccount(req, res) {
     }
 }
 
+async function getAllDepositRequests(req, res) {
+    try {
+
+        const requests = await depositRequestModel
+            .find()
+            .populate('fromUser', 'name email')
+            .populate('account', 'nickname upiId')
+            .populate('processedBy', 'name email')
+            .sort({ createdAt: -1 });
+
+
+        console.log(requests)
+        return res.status(200).json({
+            success: true,
+            requests
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
+
 module.exports = {
     getStats,
     getAllUsers,
@@ -330,4 +359,5 @@ module.exports = {
     getAllTransactions,
     freezeAccount,
     unfreezeAccount,
+    getAllDepositRequests,
 }

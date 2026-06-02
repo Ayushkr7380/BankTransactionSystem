@@ -36,6 +36,11 @@ const depositRequestSchema = new mongoose.Schema(
             type: Date,
             default: null
         },
+        processedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "user",
+            default: null
+        },
 
         remarks: {
             type: String,

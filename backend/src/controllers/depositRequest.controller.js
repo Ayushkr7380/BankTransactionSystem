@@ -139,6 +139,7 @@ async function approveDepositRequest(req, res) {
 
         depositRequest.status = "APPROVED"
         depositRequest.processedAt = new Date()
+        depositRequest.processedBy = req.user._id
 
         await depositRequest.save()
 
@@ -188,6 +189,7 @@ async function rejectDepositRequest(req, res) {
 
         depositRequest.status = "REJECTED"
         depositRequest.processedAt = new Date()
+        depositRequest.processedBy = req.user._id
 
         await depositRequest.save()
 
@@ -238,10 +240,13 @@ async function getMyDepositRequests(req, res) {
 
 
 
+
+
 module.exports = {
     createDepositRequest,
     getPendingRequests,
     approveDepositRequest,
     rejectDepositRequest,
-    getMyDepositRequests
+    getMyDepositRequests,
+    
 }

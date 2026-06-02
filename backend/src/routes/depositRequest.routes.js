@@ -4,7 +4,7 @@ const {
     getPendingRequests,
     approveDepositRequest,
     rejectDepositRequest,
-    getMyDepositRequests
+    getMyDepositRequests,
 } = require('../controllers/depositRequest.controller')
 
 const  authMiddleware  = require("../middleware/auth.middleware");

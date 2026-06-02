@@ -124,6 +124,12 @@ function SystemDashboard() {
                             onClick: () => navigate('/system/transactions')
                         },
                         {
+                            label: 'Deposit History',
+                            value: stats?.totalDepositRequests ?? 0,
+                            icon: '🏦',
+                            onClick: () => navigate('/system/deposit-requests')
+                        },
+                        {
                             label: 'System balance',
                             value: `₹${(stats?.systemBalance ?? 0).toLocaleString('en-IN')}`,
                             icon: '💰',
