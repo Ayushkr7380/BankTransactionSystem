@@ -14,6 +14,7 @@ import SystemUserDetail from "../components/system/SystemUserDetail"
 import SystemAccounts from "../components/system/SystemAccounts"
 import SystemAccountDetail from "../components/system/SystemAccountDetail"
 import SystemTransactions from "../components/system/SystemTransactions"
+import TransactionsPage from "../components/TransactionsPage"
 
 function CustomRoutes() {
     return (
@@ -53,37 +54,48 @@ function CustomRoutes() {
             <SystemProtectedRoute>
                 <SystemDashboard />
             </SystemProtectedRoute>
-        } />
+            } />
 
-        <Route path="/system/users" element={
-            <SystemProtectedRoute>
-                <SystemUsers />
-            </SystemProtectedRoute>
-        } />
+            <Route path="/system/users" element={
+                <SystemProtectedRoute>
+                    <SystemUsers />
+                </SystemProtectedRoute>
+            } />
 
-        <Route path="/system/users/:userId" element={
-            <SystemProtectedRoute>
-                <SystemUserDetail />
-            </SystemProtectedRoute>
-        } />
+            <Route path="/system/users/:userId" element={
+                <SystemProtectedRoute>
+                    <SystemUserDetail />
+                </SystemProtectedRoute>
+            } />
 
-        <Route path="/system/accounts" element={
-            <SystemProtectedRoute>
-                <SystemAccounts />
-            </SystemProtectedRoute>
-        } />
+            <Route path="/system/accounts" element={
+                <SystemProtectedRoute>
+                    <SystemAccounts />
+                </SystemProtectedRoute>
+            } />
 
-        <Route path="/system/accounts/:accountId" element={
-            <SystemProtectedRoute>
-                <SystemAccountDetail />
-            </SystemProtectedRoute>
-        } />
+            <Route path="/system/accounts/:accountId" element={
+                <SystemProtectedRoute>
+                    <SystemAccountDetail />
+                </SystemProtectedRoute>
+            } />
 
-        <Route path="/system/transactions" element={
-            <SystemProtectedRoute>
-                <SystemTransactions />
-            </SystemProtectedRoute>
-        } />
+            <Route path="/system/transactions" element={
+                <SystemProtectedRoute>
+                    <SystemTransactions />
+                </SystemProtectedRoute>
+            } />
+
+
+
+            <Route path="/transactions"
+                element={
+                    <UserProtectedRoute>
+                        <TransactionsPage />
+                    </UserProtectedRoute>
+                }
+            />
+    
             {/* Default redirect */}
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="*" element={<Navigate to="/dashboard" replace />} />

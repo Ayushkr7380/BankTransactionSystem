@@ -224,27 +224,66 @@ function DashboardPage() {
                     <div className="flex flex-col rounded-xl overflow-hidden border border-gray-100">
                         {transactions.slice(0, 5).map(txn => {
                             const isSent = myAccountIds.includes(txn.fromAccount?._id)
+
                             return (
-                                <div key={txn._id} className="bg-white px-4 py-3 flex justify-between items-center border-b border-gray-50 last:border-0">
-                                    <div className="flex items-center gap-3">
-                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm ${isSent ? 'bg-red-50 text-red-500' : 'bg-green-50 text-green-600'}`}>
+                                <div
+                                    key={txn._id}
+                                    className="bg-white px-4 py-3 flex justify-between items-center border-b border-gray-50 last:border-0"
+                                >
+                                    <div className="flex items-center gap-3 min-w-0">
+
+                                        <div
+                                            className={`w-8 h-8 rounded-full flex items-center justify-center text-sm shrink-0 ${
+                                                isSent
+                                                    ? 'bg-red-50 text-red-500'
+                                                    : 'bg-green-50 text-green-600'
+                                            }`}
+                                        >
                                             {isSent ? '↑' : '↓'}
                                         </div>
-                                        <div>
-                                            <p className="text-sm font-medium text-gray-900">
-                                                {isSent ? 'Sent' : 'Received'}
+
+                                        <div className="min-w-0">
+                                            <p className="text-sm font-medium text-gray-900 truncate">
+                                                {isSent
+                                                    ? `To ${txn.toAccount?.upiId}`
+                                                    : `From ${txn.fromAccount?.upiId}`
+                                                }
                                             </p>
-                                            <p className="text-xs text-gray-400">
+
+                                            <p className="text-xs text-gray-400 mt-0.5">
                                                 {new Date(txn.createdAt).toLocaleDateString('en-IN')}
                                             </p>
                                         </div>
                                     </div>
-                                    <p className={`text-sm font-medium ${isSent ? 'text-red-500' : 'text-green-600'}`}>
-                                        {isSent ? '−' : '+'} ₹{txn.amount.toLocaleString('en-IN')}
-                                    </p>
+
+                                    <div className="text-right shrink-0 flex flex-col items-end">
+                                        <p
+                                            className={`text-sm font-medium ${
+                                                isSent
+                                                    ? 'text-red-500'
+                                                    : 'text-green-600'
+                                            }`}
+                                        >
+                                            {isSent ? '−' : '+'} ₹
+                                            {txn.amount.toLocaleString('en-IN')}
+                                        </p>
+
+                                        <span
+                                            className={`text-[10px] px-1.5 py-0.5 rounded-full mt-1 ${
+                                                txn.status === 'COMPLETED'
+                                                    ? 'bg-green-50 text-green-600'
+                                                    : txn.status === 'PENDING'
+                                                    ? 'bg-yellow-50 text-yellow-600'
+                                                    : 'bg-red-50 text-red-500'
+                                            }`}
+                                        >
+                                            {txn.status}
+                                        </span>
+                                    </div>
                                 </div>
                             )
                         })}
+
                         {transactions.length === 0 && (
                             <div className="bg-white px-4 py-6 text-center text-sm text-gray-400">
                                 No transactions yet
