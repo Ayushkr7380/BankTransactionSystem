@@ -6,7 +6,8 @@ import ChatPage from "../components/ChatPage"
 import TransferPage from "../components/TransferPage"
 import ProfilePage from '../components/ProfilePage'
 import AccountDetailPage from '../components/AccountDetailPage'
-import ProtectedRoute from "../components/ProtectedRoute"
+import UserProtectedRoute from "../components/UserProtectedRoute"
+import SystemProtectedRoute from "../components/SystemProtectedRoute"
 import SystemDashboard from "../components/system/SystemDashboard"
 import SystemUsers from "../components/system/SystemUsers"
 import SystemUserDetail from "../components/system/SystemUserDetail"
@@ -23,57 +24,66 @@ function CustomRoutes() {
 
             {/* Protected routes */}
             <Route path="/dashboard" element={
-                <ProtectedRoute>
+                <UserProtectedRoute>
                     <Home />
-                </ProtectedRoute>
+                </UserProtectedRoute>
             } />
             <Route path="/transfer" element={
-                <ProtectedRoute>
+                <UserProtectedRoute>
                     <TransferPage />
-                </ProtectedRoute>
+                </UserProtectedRoute>
             } />
             <Route path="/chat/:userId" element={
-                <ProtectedRoute>
+                <UserProtectedRoute>
                     <ChatPage />
-                </ProtectedRoute>
+                </UserProtectedRoute>
             } />
             <Route path="/profile" element={
-                <ProtectedRoute>
+                <UserProtectedRoute>
                     <ProfilePage />
-                </ProtectedRoute>
+                </UserProtectedRoute>
             } />
             <Route path="/account/:accountId" element={
-                <ProtectedRoute>
+                <UserProtectedRoute>
                     <AccountDetailPage />
-                </ProtectedRoute>
+                </UserProtectedRoute>
             } />
 
             <Route path="/system/dashboard" element={
-                <ProtectedRoute>
-                    <SystemDashboard />
-                </ProtectedRoute>
-            } />
+            <SystemProtectedRoute>
+                <SystemDashboard />
+            </SystemProtectedRoute>
+        } />
 
-            <Route path="/system/users" element={
-                <ProtectedRoute><SystemUsers /></ProtectedRoute>
-            } />
+        <Route path="/system/users" element={
+            <SystemProtectedRoute>
+                <SystemUsers />
+            </SystemProtectedRoute>
+        } />
 
-            <Route path="/system/users/:userId" element={
-                <ProtectedRoute><SystemUserDetail /></ProtectedRoute>
-            } />
+        <Route path="/system/users/:userId" element={
+            <SystemProtectedRoute>
+                <SystemUserDetail />
+            </SystemProtectedRoute>
+        } />
 
-            <Route path="/system/accounts" element={
-                <ProtectedRoute><SystemAccounts /></ProtectedRoute>
-            } />
+        <Route path="/system/accounts" element={
+            <SystemProtectedRoute>
+                <SystemAccounts />
+            </SystemProtectedRoute>
+        } />
 
-            <Route path="/system/accounts/:accountId" element={
-                <ProtectedRoute><SystemAccountDetail /></ProtectedRoute>
-            } />
+        <Route path="/system/accounts/:accountId" element={
+            <SystemProtectedRoute>
+                <SystemAccountDetail />
+            </SystemProtectedRoute>
+        } />
 
-            <Route path="/system/transactions" element={
-                <ProtectedRoute><SystemTransactions /></ProtectedRoute>
-            } />
-
+        <Route path="/system/transactions" element={
+            <SystemProtectedRoute>
+                <SystemTransactions />
+            </SystemProtectedRoute>
+        } />
             {/* Default redirect */}
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="*" element={<Navigate to="/dashboard" replace />} />

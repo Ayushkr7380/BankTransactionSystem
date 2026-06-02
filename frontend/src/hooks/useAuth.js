@@ -39,7 +39,7 @@ export const useLogin = () => {
             if (user.isSystemUser) {
                 navigate('/system/dashboard')
             } else {
-                navigate('/auth/Me')
+                navigate('/dashboard')
             }
         },
 

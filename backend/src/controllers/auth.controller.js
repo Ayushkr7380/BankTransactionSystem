@@ -205,10 +205,10 @@ async function userMeController(req,res){
         
         const  userId  = req.user._id;
 
-        console.log(req.user._id);
-        console.log(userId);
     
-        const user = await userModel.findById(userId).select("-password");
+        const user = await userModel.findById(userId).select("+systemUser");
+
+        
 
         if(!user){
             return res.status(404).json({

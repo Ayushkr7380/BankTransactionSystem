@@ -1,14 +1,15 @@
-// components/ProtectedRoute.jsx
 import { useQuery } from "@tanstack/react-query"
 import { getMeApi } from "../api/auth.api"
 import { Navigate } from "react-router-dom"
 
-function ProtectedRoute({ children }) {
-    const { isLoading, isError } = useQuery({
+function SystemProtectedRoute({ children }) {
+    const { data , isLoading, isError } = useQuery({
         queryKey: ['me'],
         queryFn: getMeApi,
         retry: false 
     })
+
+    console.log(data)
 
     if (isLoading){
 
@@ -22,7 +23,11 @@ function ProtectedRoute({ children }) {
 
     if (isError) return <Navigate to="/login" replace />
 
+    if(!data.data.user.systemUser){
+        return <Navigate to="/dashboard" replace />
+    }
+
     return children
 }
 
-export default ProtectedRoute
+export default SystemProtectedRoute
