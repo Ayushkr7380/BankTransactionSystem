@@ -67,8 +67,8 @@ export const useAdminTransactions = () => {
 export const useAdminPendingRequests = () => {
     return useQuery({
         queryKey: ['pending-requests'],
-        queryFn: () => API.get('/notifications/pending'),
-        select: (res) => res.data.notifications,
+        queryFn: () => API.get('/depositRequest/pending'),
+        select: (res) => res.data.requests,
         staleTime: 30 * 1000,
         refetchInterval: 30 * 1000
     })
@@ -80,7 +80,7 @@ export const useApproveDeposit = () => {
 
     return useMutation({
         mutationFn: (notificationId) =>
-            API.post(`/notifications/approve/${notificationId}`),
+            API.post(`/depositRequest/approve/${notificationId}`),
 
         onSuccess: () => {
             queryClient.invalidateQueries(['pending-requests'])
@@ -95,7 +95,7 @@ export const useRejectDeposit = () => {
 
     return useMutation({
         mutationFn: (notificationId) =>
-            API.post(`/notifications/reject/${notificationId}`),
+            API.post(`/depositRequest/reject/${notificationId}`),
 
         onSuccess: () => {
             queryClient.invalidateQueries(['pending-requests'])

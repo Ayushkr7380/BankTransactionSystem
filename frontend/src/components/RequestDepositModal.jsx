@@ -7,7 +7,7 @@ function RequestDepositModal({ account, onClose }) {
     const [amount, setAmount] = useState('')
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (data) => API.post('/notifications/deposit-request', data),
+        mutationFn: (data) => API.post('/depositRequest/deposit-request', data),
 
         onSuccess: () => {
             toast.success('Deposit request sent to admin!')

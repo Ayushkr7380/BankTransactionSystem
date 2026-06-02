@@ -44,7 +44,9 @@ function ProfilePage() {
                         <Skeleton className="h-5 w-32" />
                         <Skeleton className="h-4 w-48" />
                         <Skeleton className="h-10 w-28 rounded-xl" />
-                    </div>
+                    </div>  
+
+                    
 
                     {/* Accounts */}
                     <div>
@@ -100,6 +102,32 @@ function ProfilePage() {
                         ↑ Logout
                     </button>
                 </div>
+
+                {/* Quick Actions */}
+                    <div className="bg-white border border-gray-100 rounded-xl p-3">
+                        
+                        <button
+                            onClick={() => navigate('/deposit-requests')}
+                            className="w-full flex items-center justify-between px-2 py-2 hover:bg-gray-50 rounded-lg transition"
+                        >
+                            <div className="flex items-center gap-3">
+                                <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center">
+                                    📄
+                                </div>
+
+                                <div className="text-left">
+                                    <p className="text-sm font-medium text-gray-900">
+                                        Deposit Requests
+                                    </p>
+                                    <p className="text-xs text-gray-400">
+                                        View request history
+                                    </p>
+                                </div>
+                            </div>
+
+                            <span className="text-gray-300 text-lg">›</span>
+                        </button>
+                    </div>
 
                 {/* Accounts */}
                 <div>

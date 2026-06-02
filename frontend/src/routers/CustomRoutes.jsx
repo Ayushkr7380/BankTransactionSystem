@@ -15,6 +15,7 @@ import SystemAccounts from "../components/system/SystemAccounts"
 import SystemAccountDetail from "../components/system/SystemAccountDetail"
 import SystemTransactions from "../components/system/SystemTransactions"
 import TransactionsPage from "../components/TransactionsPage"
+import DepositRequestsPage from "../components/DepositRequestsPage"
 
 function CustomRoutes() {
     return (
@@ -86,6 +87,14 @@ function CustomRoutes() {
                 </SystemProtectedRoute>
             } />
 
+            <Route
+                path="/deposit-requests"
+                element={
+                    <UserProtectedRoute>
+                        <DepositRequestsPage />
+                    </UserProtectedRoute>
+                }
+            />
 
 
             <Route path="/transactions"

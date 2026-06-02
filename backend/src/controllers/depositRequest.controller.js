@@ -1,4 +1,4 @@
-const notificationModel = require('../models/notification.model')
+const depositRequestModel = require('../models/depositRequest.model')
 const userModel = require('../models/user.model')
 const accountModel = require('../models/account.model')
 const emailService = require('../services/email.service')
@@ -50,8 +50,7 @@ async function createDepositRequest(req, res) {
             })
         }
 
-        const notification = await notificationModel.create({
-            type: "DEPOSIT_REQUEST",
+        const depositRequest = await depositRequestModel.create({
             fromUser: req.user._id,
             toUser: systemUser._id,
             account,
@@ -63,14 +62,14 @@ async function createDepositRequest(req, res) {
             systemUser.email,
             req.user.name,
             amount,
-            notification._id
+            depositRequest._id
         ).catch(err => console.error('Email failed:', err))
 
 
         return res.status(201).json({
             success: true,
             message: "Deposit request sent successfully",
-            notification
+            depositRequest
         })
 
 
@@ -87,9 +86,8 @@ async function createDepositRequest(req, res) {
 
 async function getPendingRequests(req, res) {
     try {
-        const notifications = await notificationModel
+        const requests = await depositRequestModel
             .find({
-                toUser: req.user._id,
                 status: "PENDING"
             })
             .populate('fromUser', 'name email')
@@ -98,7 +96,7 @@ async function getPendingRequests(req, res) {
 
         return res.status(200).json({
             success: true,
-            notifications
+            requests
         })
 
     } catch (error) {
@@ -112,21 +110,21 @@ async function getPendingRequests(req, res) {
 
 async function approveDepositRequest(req, res) {
     try {
-        const { notificationId } = req.params
+    const { notificationId } = req.params
 
-        const notification = await notificationModel
+        const depositRequest = await depositRequestModel
             .findById(notificationId)
             .populate('fromUser', 'name email')
             .populate('account', 'upiId nickname')
 
-        if (!notification) {
+        if (!depositRequest) {
             return res.status(404).json({
                 success: false,
-                message: "Notification not found"
+                message: "Deposit request not found"
             })
         }
 
-        if (notification.status !== "PENDING") {
+        if (depositRequest.status !== "PENDING") {
             return res.status(400).json({
                 success: false,
                 message: "Request already processed"
@@ -135,27 +133,25 @@ async function approveDepositRequest(req, res) {
 
         await processSystemTransfer(
             req.user,
-            notification.account._id,
-            notification.amount
+            depositRequest.account._id,
+            depositRequest.amount
         )
 
-        await notificationModel.findByIdAndDelete(notificationId)
+        depositRequest.status = "APPROVED"
+        depositRequest.processedAt = new Date()
 
-        
+        await depositRequest.save()
 
-        
         emailService.sendDepositSuccessEmail(
-            notification.fromUser.email,
-            notification.fromUser.name,
-            notification.amount
-        ).catch(err => console.error('Email failed:', err))
-
+            depositRequest.fromUser.email,
+            depositRequest.fromUser.name,
+            depositRequest.amount
+        ).catch(err => console.error("Email failed:", err))
 
         return res.status(200).json({
             success: true,
             message: "Deposit approved successfully"
         })
-
 
     } catch (error) {
         return res.status(500).json({
@@ -163,37 +159,43 @@ async function approveDepositRequest(req, res) {
             message: error.message
         })
     }
+
+
 }
+
 
 async function rejectDepositRequest(req, res) {
     try {
-        const { notificationId } = req.params
+    const { notificationId } = req.params
 
-        const notification = await notificationModel
+        const depositRequest = await depositRequestModel
             .findById(notificationId)
             .populate('fromUser', 'name email')
 
-        if (!notification) {
+        if (!depositRequest) {
             return res.status(404).json({
                 success: false,
-                message: "Notification not found"
+                message: "Deposit request not found"
             })
         }
 
-        if (notification.status !== "PENDING") {
+        if (depositRequest.status !== "PENDING") {
             return res.status(400).json({
                 success: false,
                 message: "Request already processed"
             })
         }
 
-        await notificationModel.findByIdAndDelete(notificationId)
+        depositRequest.status = "REJECTED"
+        depositRequest.processedAt = new Date()
+
+        await depositRequest.save()
 
         emailService.sendDepositRejectedEmail(
-            notification.fromUser.email,
-            notification.fromUser.name,
-            notification.amount
-        ).catch(err=>console.log("Email failed",err))
+            depositRequest.fromUser.email,
+            depositRequest.fromUser.name,
+            depositRequest.amount
+        ).catch(err => console.log("Email failed", err))
 
         return res.status(200).json({
             success: true,
@@ -206,11 +208,40 @@ async function rejectDepositRequest(req, res) {
             message: error.message
         })
     }
+
+
 }
+
+async function getMyDepositRequests(req, res) {
+    try {
+
+        const requests = await depositRequestModel
+            .find({
+                fromUser: req.user._id
+            })
+            .populate('account', 'upiId nickname')
+            .sort({ createdAt: -1 })
+
+        return res.status(200).json({
+            success: true,
+            requests
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+
+}
+
+
 
 module.exports = {
     createDepositRequest,
     getPendingRequests,
     approveDepositRequest,
-    rejectDepositRequest
+    rejectDepositRequest,
+    getMyDepositRequests
 }
