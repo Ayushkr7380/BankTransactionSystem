@@ -7,6 +7,7 @@ import {
     useRejectDeposit,
 } from '../../hooks/useAdmin'
 import toast from 'react-hot-toast'
+import Skeleton from '../Skeleton'
 
 function SystemDashboard() {
     const navigate = useNavigate()
@@ -17,11 +18,51 @@ function SystemDashboard() {
     const { mutate: approve, isPending: approving } = useApproveDeposit()
     const { mutate: reject, isPending: rejecting } = useRejectDeposit()
 
-    if (statsLoading || notiLoading) return (
-        <div className="min-h-screen flex items-center justify-center">
-            <p className="text-sm text-gray-400">Loading...</p>
-        </div>
-    )
+    if (statsLoading || notiLoading) {
+        return (
+            <div className="min-h-screen bg-gray-50">
+
+                {/* Navbar */}
+                <div className="bg-white border-b border-gray-100 px-5 h-14 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <Skeleton className="w-7 h-7 rounded-lg" />
+                        <Skeleton className="w-32 h-4" />
+                        <Skeleton className="w-16 h-5 rounded-full" />
+                    </div>
+
+                    <Skeleton className="w-20 h-8 rounded-lg" />
+                </div>
+
+                <div className="p-5 max-w-lg mx-auto flex flex-col gap-5">
+
+                    {/* Greeting */}
+                    <div>
+                        <Skeleton className="h-6 w-40 mb-2" />
+                        <Skeleton className="h-4 w-28" />
+                    </div>
+
+                    {/* Stats */}
+                    <div className="grid grid-cols-2 gap-2">
+                        <Skeleton className="h-28 rounded-xl" />
+                        <Skeleton className="h-28 rounded-xl" />
+                        <Skeleton className="h-28 rounded-xl" />
+                        <Skeleton className="h-28 rounded-xl" />
+                    </div>
+
+                    {/* Pending Requests */}
+                    <div>
+                        <Skeleton className="h-5 w-40 mb-3" />
+
+                        <div className="flex flex-col gap-3">
+                            <Skeleton className="h-44 rounded-xl" />
+                            <Skeleton className="h-44 rounded-xl" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="min-h-screen bg-gray-50">

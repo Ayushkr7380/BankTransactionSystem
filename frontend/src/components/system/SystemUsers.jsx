@@ -1,15 +1,37 @@
 import { useNavigate } from 'react-router-dom'
 import { useAdminUsers } from '../../hooks/useAdmin'
+import Skeleton from '../Skeleton'
 
 function SystemUsers() {
     const navigate = useNavigate()
     const { data: users = [], isLoading } = useAdminUsers()
 
-    if (isLoading) return (
-        <div className="min-h-screen flex items-center justify-center">
-            <p className="text-sm text-gray-400">Loading...</p>
-        </div>
-    )
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-gray-50">
+
+                {/* Navbar */}
+                <div className="bg-white border-b border-gray-100 px-5 h-14 flex items-center gap-3">
+                    <Skeleton className="w-8 h-8 rounded-lg" />
+                    <Skeleton className="h-4 w-24" />
+                    <div className="ml-auto">
+                        <Skeleton className="h-4 w-16" />
+                    </div>
+                </div>
+
+                {/* Users List */}
+                <div className="p-5 max-w-lg mx-auto flex flex-col gap-3">
+
+                    <Skeleton className="h-20 rounded-xl" />
+                    <Skeleton className="h-20 rounded-xl" />
+                    <Skeleton className="h-20 rounded-xl" />
+                    <Skeleton className="h-20 rounded-xl" />
+                    <Skeleton className="h-20 rounded-xl" />
+
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="min-h-screen bg-gray-50">

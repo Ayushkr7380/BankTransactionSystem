@@ -1,16 +1,57 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAdminUserDetail } from '../../hooks/useAdmin'
+import Skeleton from '../Skeleton'
 
 function SystemUserDetail() {
     const { userId } = useParams()
     const navigate = useNavigate()
     const { data, isLoading } = useAdminUserDetail(userId)
 
-    if (isLoading) return (
-        <div className="min-h-screen flex items-center justify-center">
-            <p className="text-sm text-gray-400">Loading...</p>
-        </div>
-    )
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-gray-50">
+
+                {/* Navbar */}
+                <div className="bg-white border-b border-gray-100 px-5 h-14 flex items-center gap-3">
+                    <Skeleton className="w-8 h-8 rounded-lg" />
+                    <div className="flex-1">
+                        <Skeleton className="h-4 w-32 mb-1" />
+                        <Skeleton className="h-3 w-48" />
+                    </div>
+                </div>
+
+                <div className="p-5 max-w-lg mx-auto flex flex-col gap-4">
+
+                    {/* Balance Card */}
+                    <Skeleton className="h-32 rounded-2xl" />
+
+                    {/* Accounts */}
+                    <div>
+                        <Skeleton className="h-4 w-24 mb-2" />
+
+                        <div className="flex flex-col gap-2">
+                            <Skeleton className="h-20 rounded-xl" />
+                            <Skeleton className="h-20 rounded-xl" />
+                            <Skeleton className="h-20 rounded-xl" />
+                        </div>
+                    </div>
+
+                    {/* Transactions */}
+                    <div>
+                        <Skeleton className="h-4 w-28 mb-2" />
+
+                        <div className="flex flex-col gap-2">
+                            <Skeleton className="h-16 rounded-xl" />
+                            <Skeleton className="h-16 rounded-xl" />
+                            <Skeleton className="h-16 rounded-xl" />
+                            <Skeleton className="h-16 rounded-xl" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        )
+    }
 
     const user = data?.user
     const accounts = data?.accounts ?? []

@@ -4,6 +4,7 @@ import { useAccountDetail, useSetPrimary } from '../hooks/useAccounts'
 import EditNicknameModal from '../components/EditNicknameModal'
 import RequestDepositModal from '../components/RequestDepositModal'
 import toast from 'react-hot-toast'
+import Skeleton from '../components/Skeleton'
 
 function AccountDetailPage() {
     const { accountId } = useParams()
@@ -16,11 +17,57 @@ function AccountDetailPage() {
     const { data, isLoading } = useAccountDetail(accountId)
     const { mutate: setPrimary, isPending } = useSetPrimary()
 
-    if (isLoading) return (
-        <div className="min-h-screen flex items-center justify-center">
-            <p className="text-sm text-gray-400">Loading...</p>
-        </div>
-    )
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-gray-50">
+
+                {/* Navbar */}
+                <div className="bg-white border-b border-gray-100 px-5 h-14 flex items-center gap-3">
+                    <Skeleton className="w-8 h-8 rounded-lg" />
+                    <div className="flex-1">
+                        <Skeleton className="h-4 w-32 mb-1" />
+                        <Skeleton className="h-3 w-24" />
+                    </div>
+                    <Skeleton className="h-6 w-16 rounded-full" />
+                </div>
+
+                <div className="p-5 flex flex-col gap-4 max-w-lg mx-auto">
+
+                    {/* Balance Card */}
+                    <Skeleton className="h-36 rounded-2xl" />
+
+                    {/* Quick Actions */}
+                    <Skeleton className="h-16 rounded-xl" />
+                    <Skeleton className="h-16 rounded-xl" />
+                    <Skeleton className="h-16 rounded-xl" />
+
+                    {/* Account Info */}
+                    <div className="bg-white border border-gray-100 rounded-xl p-4">
+                        <Skeleton className="h-4 w-24 mb-4" />
+                        <div className="space-y-3">
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                        </div>
+                    </div>
+
+                    {/* Transactions */}
+                    <div>
+                        <Skeleton className="h-4 w-28 mb-3" />
+
+                        <div className="flex flex-col gap-2">
+                            <Skeleton className="h-16 rounded-xl" />
+                            <Skeleton className="h-16 rounded-xl" />
+                            <Skeleton className="h-16 rounded-xl" />
+                            <Skeleton className="h-16 rounded-xl" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        )
+    }
 
     const account = data?.account
     const transactions = data?.transactions ?? []

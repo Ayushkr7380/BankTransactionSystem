@@ -10,11 +10,15 @@ function ProtectedRoute({ children }) {
         retry: false 
     })
 
-    if (isLoading) return (
-        <div className="min-h-screen flex items-center justify-center">
-            <p className="text-sm text-gray-400">Loading...</p>
-        </div>
-    )
+    if (isLoading){
+
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-2 border-gray-300 border-t-gray-900" />
+            </div>
+        )
+    }
+    
 
     if (isError) return <Navigate to="/login" replace />
 

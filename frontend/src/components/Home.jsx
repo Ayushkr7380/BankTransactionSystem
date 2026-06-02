@@ -1,5 +1,6 @@
 import { useDashboard } from '../hooks/useDashboard'
 // import { useLogout } from '../hooks/useAuth'
+import Skeleton from '../components/Skeleton'
 import { Link , useNavigate} from 'react-router-dom'
 import CreateAccountModal from './CreateAccountModal'
 import { useState } from 'react'
@@ -23,11 +24,44 @@ function DashboardPage() {
    const { mutate: setPrimary, isPending } = useSetPrimary()
 
 
-    if (isLoading) return (
-        <div className="min-h-screen flex items-center justify-center">
-            <p className="text-gray-400 text-sm">Loading...</p>
-        </div>
-    )
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-gray-50">
+                <div className="p-6 max-w-lg mx-auto flex flex-col gap-5">
+
+                    {/* Greeting */}
+                    <div>
+                        <Skeleton className="h-6 w-48 mb-2" />
+                        <Skeleton className="h-4 w-32" />
+                    </div>
+
+                    {/* Metrics */}
+                    <div className="grid grid-cols-3 gap-2">
+                        <Skeleton className="h-20" />
+                        <Skeleton className="h-20" />
+                        <Skeleton className="h-20" />
+                    </div>
+
+                    {/* Send Money Button */}
+                    <Skeleton className="h-12" />
+
+                    {/* Accounts */}
+                    <div className="flex flex-col gap-2">
+                        <Skeleton className="h-20" />
+                        <Skeleton className="h-20" />
+                    </div>
+
+                    {/* Transactions */}
+                    <div className="flex flex-col gap-2">
+                        <Skeleton className="h-16" />
+                        <Skeleton className="h-16" />
+                        <Skeleton className="h-16" />
+                    </div>
+
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="min-h-screen bg-gray-50">

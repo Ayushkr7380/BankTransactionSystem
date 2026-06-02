@@ -5,6 +5,7 @@ import toast from 'react-hot-toast'
 import API from '../api/axios'
 import { useGetMyAccounts } from '../hooks/useAccounts'
 import generateIdempotencyKey from '../utils/generateIdempotencyKey'
+import Skeleton from '../components/Skeleton'
 
 function ChatPage() {
     const { userId } = useParams()
@@ -109,11 +110,48 @@ function ChatPage() {
         return groups
     }, {})
 
-    if (isLoading) return (
-        <div className="min-h-screen flex items-center justify-center">
-            <p className="text-sm text-gray-400">Loading...</p>
-        </div>
-    )
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-gray-50 flex flex-col">
+
+                {/* Navbar Skeleton */}
+                <div className="bg-white border-b border-gray-100 px-5 h-14 flex items-center gap-3">
+                    <Skeleton className="w-8 h-8 rounded-lg" />
+                    <Skeleton className="w-8 h-8 rounded-full" />
+                    <div className="flex-1">
+                        <Skeleton className="h-4 w-32 mb-2" />
+                        <Skeleton className="h-3 w-24" />
+                    </div>
+                    <Skeleton className="h-8 w-16 rounded-lg" />
+                </div>
+
+                {/* Chat Messages Skeleton */}
+                <div className="flex-1 p-4 flex flex-col gap-4">
+                    <Skeleton className="h-4 w-24 mx-auto" />
+
+                    <div className="flex justify-start">
+                        <Skeleton className="h-20 w-56 rounded-2xl" />
+                    </div>
+
+                    <div className="flex justify-end">
+                        <Skeleton className="h-20 w-48 rounded-2xl" />
+                    </div>
+
+                    <Skeleton className="h-4 w-24 mx-auto" />
+
+                    <div className="flex justify-start">
+                        <Skeleton className="h-20 w-52 rounded-2xl" />
+                    </div>
+                </div>
+
+                {/* Bottom Send Area */}
+                <div className="bg-white border-t border-gray-100 p-3">
+                    <Skeleton className="h-11 w-full rounded-lg" />
+                </div>
+
+            </div>
+        )
+    }
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">

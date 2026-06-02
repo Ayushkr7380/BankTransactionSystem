@@ -5,6 +5,7 @@ import CreateAccountModal from '../components/CreateAccountModal'
 import { useQuery } from '@tanstack/react-query'
 import { getMeApi } from '../api/auth.api'
 import { useGetMyAccounts } from '../hooks/useAccounts' 
+import Skeleton from '../components/Skeleton'
 
 function ProfilePage() {
     const navigate = useNavigate()
@@ -25,11 +26,41 @@ function ProfilePage() {
 
     console.log("user :::",user)
 
-    if (isLoading || accountsLoading) return (
-        <div className="min-h-screen flex items-center justify-center">
-            <p className="text-sm text-gray-400">Loading...</p>
-        </div>
-    )
+    if (isLoading || accountsLoading) {
+        return (
+            <div className="min-h-screen bg-gray-50">
+
+                {/* Navbar */}
+                <div className="bg-white border-b border-gray-100 px-5 h-14 flex items-center gap-3">
+                    <Skeleton className="w-8 h-8 rounded-lg" />
+                    <Skeleton className="h-4 w-20" />
+                </div>
+
+                <div className="p-5 flex flex-col gap-5 max-w-lg mx-auto">
+
+                    {/* Profile Card */}
+                    <div className="bg-white border border-gray-100 rounded-2xl p-6 flex flex-col items-center gap-3">
+                        <Skeleton className="w-16 h-16 rounded-full" />
+                        <Skeleton className="h-5 w-32" />
+                        <Skeleton className="h-4 w-48" />
+                        <Skeleton className="h-10 w-28 rounded-xl" />
+                    </div>
+
+                    {/* Accounts */}
+                    <div>
+                        <Skeleton className="h-4 w-28 mb-3" />
+
+                        <div className="flex flex-col gap-2">
+                            <Skeleton className="h-20 rounded-xl" />
+                            <Skeleton className="h-20 rounded-xl" />
+                            <Skeleton className="h-20 rounded-xl" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="min-h-screen bg-gray-50">
