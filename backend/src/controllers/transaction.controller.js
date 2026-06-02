@@ -123,11 +123,11 @@ async function createTransaction(req,res){
     let transaction;
     let session; 
     try{
-        const session = await mongoose.startSession();
+        session = await mongoose.startSession();
 
         session.startTransaction();
 
-        result = await transactionModel.create([
+        const result = await transactionModel.create([
             {
                 fromAccount,
                 toAccount,
@@ -205,10 +205,7 @@ async function createTransaction(req,res){
         })
     }
 
-    return res.status(201).json({
-        message: "Transaction completed successfully",
-        transaction: transaction
-    })
+
 
     /**
      * 10. Send email notification
@@ -216,10 +213,12 @@ async function createTransaction(req,res){
 
     emailService.sendTransactionEmail(req.user.email , req.user.name , amount , toUserAccount.upiId).catch(err=>console.log("Email failed",err));
 
-
-
     
-    
+    return res.status(201).json({
+        message: "Transaction completed successfully",
+        transaction: transaction
+    })
+
 
 }
 
