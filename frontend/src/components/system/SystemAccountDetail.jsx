@@ -223,9 +223,9 @@ function SystemAccountDetail() {
                                     </div>
                                     <div>
                                         <p className="text-sm font-medium text-gray-900">
-                                            {txn.type === 'SYSTEM_CAPITAL'
-                                                ? 'Initial Deposit'
-                                                : txn.type
+                                            {txn.type === 'CREDIT'
+                                                ? `From ${txn.transaction?.fromAccount?.upiId}`
+                                                : `To ${txn.transaction?.toAccount?.upiId}`
                                             }
                                         </p>
                                         <p className="text-xs text-gray-400">
